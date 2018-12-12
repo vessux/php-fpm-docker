@@ -5,7 +5,6 @@ RUN apt-get update \
     supervisor \
     zlib1g-dev \
     libicu-dev \
-    g++ \
     libxml2-dev \
     #gd
     libpng12-dev \
@@ -15,9 +14,19 @@ RUN apt-get update \
     libfreetype6-dev \
     libxpm-dev \
     #gd end
-    sudo \
     locales \
     libxslt-dev \
+    libpq-dev \
+ && docker-php-ext-configure \
+    gd \
+    --with-gd \
+    --with-webp-dir \
+    --with-jpeg-dir=/usr/lib \
+    --with-png-dir \
+    --with-xpm-dir \
+    --with-freetype-dir \
+ && docker-php-ext-configure \
+    intl \
  && docker-php-ext-install \
     calendar \
     opcache \
@@ -37,17 +46,10 @@ RUN apt-get update \
     sysvshm \
     wddx \
     xsl \
- && docker-php-ext-configure gd \
-    --with-gd \
-    --with-webp-dir \
-    --with-jpeg-dir=/usr/lib \
-    --with-png-dir \
-    --with-xpm-dir \
-    --with-freetype-dir \
- && docker-php-ext-install \
     gd \
     exif \
- && docker-php-ext-configure intl \
- && docker-php-ext-install intl \
+    intl \
+    pgsql \
+    pdo_pgsql \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
